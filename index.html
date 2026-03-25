@@ -74,28 +74,8 @@ section{padding:5rem 2rem}
 .tech-stack{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
 .tech-pill{background:var(--surface3);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.75rem;font-family:'DM Mono',monospace;color:var(--ink2)}
 
-/* ── PIPELINE ── */
-#pipeline{background:var(--surface2)}
-.pipeline-steps{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:3rem;border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;background:var(--border)}
-.pipeline-step{background:var(--surface);padding:1.5rem 1rem;text-align:center;position:relative;cursor:pointer;transition:background .2s}
-.pipeline-step:hover,.pipeline-step.active{background:var(--surface2)}
-.pipeline-step-num{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--ink4);margin-bottom:.5rem}
-.pipeline-step-icon{font-size:1.5rem;margin-bottom:.5rem;display:block}
-.pipeline-step-name{font-size:.75rem;font-weight:500;color:var(--ink);line-height:1.3}
-.pipeline-detail{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;margin-top:1rem;display:none}
-.pipeline-detail.active{display:grid;grid-template-columns:2fr 1fr;gap:2rem;align-items:start}
-.pipeline-detail h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
-.pipeline-detail p{color:var(--ink3);font-size:.875rem;line-height:1.7;margin-bottom:1rem}
-.tool-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
-.tool-list li{display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-family:'DM Mono',monospace;color:var(--ink2);background:var(--surface2);padding:.4rem .75rem;border-radius:var(--radius);border:1px solid var(--border)}
-.tool-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
-.metrics-mini{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
-.metric-mini{background:var(--surface2);border-radius:var(--radius);padding:.75rem;text-align:center;border:1px solid var(--border)}
-.metric-mini-val{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;color:var(--ink)}
-.metric-mini-key{font-size:.7rem;color:var(--ink3);margin-top:2px}
-
 /* ── MAIN DEMO ── */
-#demo{background:var(--surface)}
+#orders{background:var(--surface)}
 .demo-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:2rem;margin-top:3rem;align-items:start}
 .demo-panel{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden}
 .demo-panel-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem}
@@ -183,7 +163,10 @@ footer{background:var(--ink);color:white;padding:3rem 2rem}
 .footer-bottom{max-width:1200px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
 .footer-bottom p{font-size:.75rem;color:rgba(255,255,255,.3);font-family:'DM Mono',monospace}
 
-/* ── LOADING ANIMATION ── */
+/* ── SAMPLE BUTTONS ── */
+.sample-btn{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:.5rem 1rem;font-family:'DM Sans',sans-serif;font-size:.8rem;color:var(--ink2);cursor:pointer;transition:all .2s;white-space:nowrap}
+.sample-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--surface3)}
+.sample-btn:active{transform:scale(.98)}
 @keyframes spin{to{transform:rotate(360deg)}}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -216,8 +199,7 @@ footer{background:var(--ink);color:white;padding:3rem 2rem}
     <div class="logo"><span class="logo-dot"></span>Runspadi</div>
     <div class="nav-links">
       <a href="#about">About</a>
-      <a href="#pipeline">How it works</a>
-      <a href="#demo">Live demo</a>
+      <a href="#orders">Place an order</a>
       <a href="#metrics">Metrics</a>
       <span class="nav-badge">Powered by AWS AgentCore</span>
     </div>
@@ -230,9 +212,9 @@ footer{background:var(--ink);color:white;padding:3rem 2rem}
   <h1>Zero-touch delivery.<br><em>Six AI agents.</em><br>One platform.</h1>
   <p class="hero-sub">Runspadi replaces 15 human dispatchers with a fully autonomous multi-agent system built on Amazon Bedrock AgentCore — handling every delivery from order intake to doorstep confirmation.</p>
   <div class="hero-cta">
-    <a href="#demo" class="btn btn-primary">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      Try live demo
+    <a href="#orders" class="btn btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      Place an order
     </a>
     <a href="#about" class="btn btn-secondary">Learn more</a>
   </div>
@@ -268,7 +250,6 @@ footer{background:var(--ink);color:white;padding:3rem 2rem}
           <span class="tech-pill">DynamoDB</span>
           <span class="tech-pill">Termii SMS</span>
           <span class="tech-pill">AWS SNS</span>
-          <span class="tech-pill">us-east-1</span>
         </div>
       </div>
       <div class="about-cards">
@@ -305,78 +286,24 @@ footer{background:var(--ink);color:white;padding:3rem 2rem}
   </div>
 </section>
 
-<!-- PIPELINE -->
-<section id="pipeline">
+<!-- ORDERS -->
+<section id="orders">
   <div class="section-inner">
-    <div class="section-label">Delivery lifecycle</div>
-    <div class="section-title">Seven stages. Fully autonomous.</div>
-    <p class="section-sub">Click any stage to see which agent handles it, what tools it calls, and how long it takes.</p>
+    <div class="section-label">Place an order</div>
+    <div class="section-title">Send a delivery request</div>
+    <p class="section-sub">Fill in the details or pick a sample order below. The system validates addresses, assigns the nearest available rider, and confirms the delivery — all in seconds.</p>
 
-    <div class="pipeline-steps" id="pipelineSteps">
-      <div class="pipeline-step active" data-stage="0">
-        <div class="pipeline-step-num">01</div>
-        <div class="pipeline-step-icon">📥</div>
-        <div class="pipeline-step-name">Order Reception</div>
-      </div>
-      <div class="pipeline-step" data-stage="1">
-        <div class="pipeline-step-num">02</div>
-        <div class="pipeline-step-icon">🏍️</div>
-        <div class="pipeline-step-name">Rider Assignment</div>
-      </div>
-      <div class="pipeline-step" data-stage="2">
-        <div class="pipeline-step-num">03</div>
-        <div class="pipeline-step-icon">💬</div>
-        <div class="pipeline-step-name">Customer Comms</div>
-      </div>
-      <div class="pipeline-step" data-stage="3">
-        <div class="pipeline-step-num">04</div>
-        <div class="pipeline-step-icon">📡</div>
-        <div class="pipeline-step-name">Monitoring</div>
-      </div>
-      <div class="pipeline-step" data-stage="4">
-        <div class="pipeline-step-num">05</div>
-        <div class="pipeline-step-icon">🚨</div>
-        <div class="pipeline-step-name">Escalation</div>
-      </div>
-      <div class="pipeline-step" data-stage="5">
-        <div class="pipeline-step-num">06</div>
-        <div class="pipeline-step-icon">📊</div>
-        <div class="pipeline-step-name">Analytics</div>
+    <!-- Sample orders autofill -->
+    <div style="margin:1.5rem 0 2rem">
+      <div style="font-size:.75rem;color:var(--ink3);font-family:'DM Mono',monospace;letter-spacing:.04em;margin-bottom:.75rem;font-weight:500">Try a sample order ↓</div>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap" id="sampleOrders">
+        <button class="sample-btn" onclick="fillSample(0)">🍔 KFC Victoria Island → Lekki Phase 1</button>
+        <button class="sample-btn" onclick="fillSample(1)">🍕 Domino's Ikeja → Maryland</button>
+        <button class="sample-btn" onclick="fillSample(2)">🛒 Shoprite Surulere → Yaba</button>
+        <button class="sample-btn" onclick="fillSample(3)">💊 Medplus Ikoyi → Victoria Island</button>
       </div>
     </div>
-
-    <div id="pipelineDetail" class="pipeline-detail active">
-      <div>
-        <h3 id="pd-title">Order Reception Agent</h3>
-        <p id="pd-desc">Validates both pickup and delivery addresses via geocoding, checks restaurant availability in DynamoDB, and creates the delivery job. Escalates immediately if addresses are invalid or the restaurant is closed.</p>
-        <ul class="tool-list" id="pd-tools">
-          <li>validate_address → Google Maps geocoding</li>
-          <li>check_restaurant_availability → DynamoDB</li>
-          <li>create_delivery_job → DynamoDB orders table</li>
-          <li>escalate_to_human → DynamoDB + SNS</li>
-        </ul>
-      </div>
-      <div>
-        <div class="metrics-mini" id="pd-metrics">
-          <div class="metric-mini"><div class="metric-mini-val">0–5s</div><div class="metric-mini-key">Duration</div></div>
-          <div class="metric-mini"><div class="metric-mini-val">API GW</div><div class="metric-mini-key">Trigger</div></div>
-          <div class="metric-mini"><div class="metric-mini-val">3</div><div class="metric-mini-key">Tool calls</div></div>
-          <div class="metric-mini"><div class="metric-mini-val">99.1%</div><div class="metric-mini-key">Success rate</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- DEMO -->
-<section id="demo">
-  <div class="section-inner">
-    <div class="section-label">Live system</div>
-    <div class="section-title">Place a real order</div>
-    <p class="section-sub">This invokes the live AgentCore Runtime deployed in AWS us-east-1. Your order will be validated, created in DynamoDB, and processed by Claude Sonnet 4.</p>
-
-    <div class="demo-layout">
-      <!-- Input panel -->
+      <div class="demo-layout">
       <div class="demo-panel">
         <div class="demo-panel-header">
           <div class="demo-panel-dot" style="background:#ff4d1c"></div>
@@ -398,11 +325,11 @@ footer{background:var(--ink);color:white;padding:3rem 2rem}
               <div class="form-row">
                 <div class="form-group">
                   <label>Full name</label>
-                  <input type="text" id="customerName" placeholder="John Adebayo" value="John Adebayo">
+                  <input type="text" id="customerName" placeholder="e.g. John Adebayo">
                 </div>
                 <div class="form-group">
                   <label>Phone (E.164)</label>
-                  <input type="text" id="customerPhone" placeholder="+2348012345678" value="+2348012345678">
+                  <input type="text" id="customerPhone" placeholder="+2348012345678">
                 </div>
               </div>
             </div>
@@ -413,14 +340,17 @@ footer{background:var(--ink);color:white;padding:3rem 2rem}
                 <div class="form-group">
                   <label>Restaurant</label>
                   <select id="restaurantId">
+                    <option value="">Select a restaurant</option>
                     <option value="REST-456">KFC Victoria Island</option>
                     <option value="REST-101">Chicken Republic Lekki</option>
                     <option value="REST-202">Domino's Pizza Ikeja</option>
+                    <option value="REST-303">Shoprite Surulere</option>
+                    <option value="REST-404">Medplus Ikoyi</option>
                   </select>
                 </div>
                 <div class="form-group">
                   <label>Order total (₦)</label>
-                  <input type="number" id="totalAmount" value="7000" min="500">
+                  <input type="number" id="totalAmount" placeholder="e.g. 7000" min="500">
                 </div>
               </div>
             </div>
@@ -430,15 +360,15 @@ footer{background:var(--ink);color:white;padding:3rem 2rem}
               <div class="form-row">
                 <div class="form-group full">
                   <label>Street</label>
-                  <input type="text" id="pickupStreet" value="Plot 1415 Adeola Hopewell">
+                  <input type="text" id="pickupStreet" placeholder="e.g. Plot 1415 Adeola Hopewell">
                 </div>
                 <div class="form-group">
                   <label>Area</label>
-                  <input type="text" id="pickupArea" value="Victoria Island">
+                  <input type="text" id="pickupArea" placeholder="e.g. Victoria Island">
                 </div>
                 <div class="form-group">
                   <label>City</label>
-                  <input type="text" id="pickupCity" value="Lagos">
+                  <input type="text" id="pickupCity" placeholder="Lagos">
                 </div>
               </div>
             </div>
@@ -448,15 +378,15 @@ footer{background:var(--ink);color:white;padding:3rem 2rem}
               <div class="form-row">
                 <div class="form-group full">
                   <label>Street</label>
-                  <input type="text" id="deliveryStreet" value="12 Admiralty Way">
+                  <input type="text" id="deliveryStreet" placeholder="e.g. 12 Admiralty Way">
                 </div>
                 <div class="form-group">
                   <label>Area</label>
-                  <input type="text" id="deliveryArea" value="Lekki Phase 1">
+                  <input type="text" id="deliveryArea" placeholder="e.g. Lekki Phase 1">
                 </div>
                 <div class="form-group">
                   <label>City</label>
-                  <input type="text" id="deliveryCity" value="Lagos">
+                  <input type="text" id="deliveryCity" placeholder="Lagos">
                 </div>
               </div>
             </div>
@@ -465,12 +395,12 @@ footer{background:var(--ink);color:white;padding:3rem 2rem}
               <div class="form-section-label">Items</div>
               <div class="form-group">
                 <label>Order items (JSON)</label>
-                <textarea id="orderItems">[{"name": "Zinger Burger Meal", "quantity": 2, "price": 3500}]</textarea>
+                <textarea id="orderItems" placeholder='[{"name": "Zinger Burger Meal", "quantity": 2, "price": 3500}]'></textarea>
               </div>
             </div>
 
             <button class="submit-btn" id="submitOrder" onclick="submitOrder()">
-              Submit order to AgentCore
+              Place order
             </button>
           </div>
 
@@ -548,7 +478,7 @@ footer{background:var(--ink);color:white;padding:3rem 2rem}
         <div class="demo-panel-body" id="resultBody">
           <div class="result-empty">
             <div class="result-empty-icon">⬡</div>
-            <p>Submit an order to see the agent's<br>real-time reasoning and decision.</p>
+            <p>Submit an order to see the result.</p>
           </div>
         </div>
       </div>
@@ -629,8 +559,7 @@ footer{background:var(--ink);color:white;padding:3rem 2rem}
     </div>
     <div class="footer-col">
       <h4>System</h4>
-      <a href="#pipeline">Delivery pipeline</a>
-      <a href="#demo">Live demo</a>
+      <a href="#orders">Place an order</a>
       <a href="#metrics">Performance</a>
     </div>
     <div class="footer-col">
@@ -660,7 +589,93 @@ const AGENT_ARNS = {
 // AWS credentials — set these or wire to your backend
 // For production: proxy calls through your own API endpoint
 const AWS_REGION = 'us-east-1';
-const API_ENDPOINT = 'https://f5mlv3n5rg3kzfuviroj6owe3u0bmzii.lambda-url.us-east-1.on.aws/'; // Your backend proxy endpoint
+const API_ENDPOINT = 'https://f5mlv3n5rg3kzfuviroj6owe3u0bmzii.lambda-url.us-east-1.on.aws/';
+
+// ── SAMPLE ORDERS ─────────────────────────────────────────────
+const SAMPLES = [
+  {
+    customerName: 'John Adebayo',
+    customerPhone: '+2348012345678',
+    restaurantId: 'REST-456',
+    restaurantName: 'KFC Victoria Island',
+    totalAmount: 7000,
+    pickupStreet: 'Plot 1415 Adeola Hopewell',
+    pickupArea: 'Victoria Island',
+    pickupCity: 'Lagos',
+    deliveryStreet: '12 Admiralty Way',
+    deliveryArea: 'Lekki Phase 1',
+    deliveryCity: 'Lagos',
+    items: [{"name":"Zinger Burger Meal","quantity":2,"price":3500}]
+  },
+  {
+    customerName: 'Amaka Okonkwo',
+    customerPhone: '+2348023456789',
+    restaurantId: 'REST-202',
+    restaurantName: "Domino's Pizza Ikeja",
+    totalAmount: 9500,
+    pickupStreet: '14 Allen Avenue',
+    pickupArea: 'Ikeja',
+    pickupCity: 'Lagos',
+    deliveryStreet: '7 Mobolaji Bank Anthony Way',
+    deliveryArea: 'Maryland',
+    deliveryCity: 'Lagos',
+    items: [{"name":"Pepperoni Pizza Large","quantity":1,"price":6500},{"name":"Chicken Wings","quantity":1,"price":3000}]
+  },
+  {
+    customerName: 'Tunde Balogun',
+    customerPhone: '+2348034567890',
+    restaurantId: 'REST-303',
+    restaurantName: 'Shoprite Surulere',
+    totalAmount: 15200,
+    pickupStreet: '30 Adeniran Ogunsanya Street',
+    pickupArea: 'Surulere',
+    pickupCity: 'Lagos',
+    deliveryStreet: '22 Herbert Macaulay Way',
+    deliveryArea: 'Yaba',
+    deliveryCity: 'Lagos',
+    items: [{"name":"Grocery Bundle","quantity":1,"price":15200}]
+  },
+  {
+    customerName: 'Ngozi Eze',
+    customerPhone: '+2348045678901',
+    restaurantId: 'REST-404',
+    restaurantName: 'Medplus Ikoyi',
+    totalAmount: 4800,
+    pickupStreet: '3 Kingsway Road',
+    pickupArea: 'Ikoyi',
+    pickupCity: 'Lagos',
+    deliveryStreet: '15 Ozumba Mbadiwe Avenue',
+    deliveryArea: 'Victoria Island',
+    deliveryCity: 'Lagos',
+    items: [{"name":"Prescription Medication","quantity":1,"price":4800}]
+  }
+];
+
+function fillSample(idx) {
+  const s = SAMPLES[idx];
+  document.getElementById('customerName').value    = s.customerName;
+  document.getElementById('customerPhone').value   = s.customerPhone;
+  document.getElementById('restaurantId').value    = s.restaurantId;
+  document.getElementById('totalAmount').value     = s.totalAmount;
+  document.getElementById('pickupStreet').value    = s.pickupStreet;
+  document.getElementById('pickupArea').value      = s.pickupArea;
+  document.getElementById('pickupCity').value      = s.pickupCity;
+  document.getElementById('deliveryStreet').value  = s.deliveryStreet;
+  document.getElementById('deliveryArea').value    = s.deliveryArea;
+  document.getElementById('deliveryCity').value    = s.deliveryCity;
+  document.getElementById('orderItems').value      = JSON.stringify(s.items, null, 2);
+  // Highlight the active sample button
+  document.querySelectorAll('.sample-btn').forEach((b, i) => {
+    b.style.borderColor = i === idx ? 'var(--accent)' : '';
+    b.style.color       = i === idx ? 'var(--accent)' : '';
+  });
+  // Switch to order tab if not already there
+  document.querySelectorAll('.stage-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('[data-tab="order"]').classList.add('active');
+  ['order','rider','monitor','analytics'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === 'order' ? 'block' : 'none';
+  });
+}
 
 // ── STAGE TABS ────────────────────────────────────────────────
 document.querySelectorAll('.stage-tab').forEach(tab => {
@@ -677,62 +692,6 @@ document.querySelectorAll('.stage-tab').forEach(tab => {
 
 // Set today's date in analytics tab
 document.getElementById('analyticsDate').value = new Date().toISOString().split('T')[0];
-
-// ── PIPELINE INTERACTION ──────────────────────────────────────
-const stages = [
-  {
-    title: 'Order Reception Agent',
-    desc: 'Validates both pickup and delivery addresses via geocoding, checks restaurant availability in DynamoDB, and creates the delivery job. Escalates immediately if addresses are invalid or the restaurant is closed.',
-    tools: ['validate_address → Lagos coordinate lookup','check_restaurant_availability → DynamoDB','create_delivery_job → DynamoDB orders table','escalate_to_human → DynamoDB + SNS'],
-    metrics: [['0–5s','Duration'],['API GW','Trigger'],['3','Tool calls'],['99.1%','Success']]
-  },
-  {
-    title: 'Rider Assignment Agent',
-    desc: 'Scans DynamoDB for available riders within 5 km of pickup. Calculates live ETA for the top 3 candidates using haversine distance, then assigns the nearest+fastest rider. Escalates if no riders found within 10 km.',
-    tools: ['query_available_riders → DynamoDB scan','calculate_eta → haversine distance','assign_rider → updates orders + riders tables','escalate_to_human → no riders available'],
-    metrics: [['5–15s','Duration'],['EventBridge','Trigger'],['4','Tool calls'],['95.3%','Success']]
-  },
-  {
-    title: 'Customer Comms Agent',
-    desc: 'Generates personalised SMS messages for each delivery event. Uses the customer\'s first name, keeps messages under 160 chars, includes the tracking link, and logs every notification to DynamoDB.',
-    tools: ['send_sms → Termii API (ng.termii.com)','send_whatsapp → Termii WhatsApp channel','log to runspadi-notifications table'],
-    metrics: [['1–3s','Duration'],['RIDER_ASSIGNED event','Trigger'],['2','Tool calls'],['99.8%','SMS delivery']]
-  },
-  {
-    title: 'Monitoring Agent',
-    desc: 'Polls every 60 seconds. For each active delivery it fetches the rider\'s current GPS, recalculates ETA, and applies the delay decision tree: <10 min = do nothing, 10–20 min = notify customer, >20 min = escalate.',
-    tools: ['get_active_deliveries → DynamoDB query','get_rider_location → DynamoDB riders table','calculate_eta → live ETA recalculation','update_delivery_status → DynamoDB','send_sms → delay notifications'],
-    metrics: [['Continuous','Duration'],['EventBridge cron 60s','Trigger'],['5','Tool calls/delivery'],['98.5%','Detection accuracy']]
-  },
-  {
-    title: 'Escalation Agent',
-    desc: 'Creates structured tickets for human dispatchers. Classifies severity (CRITICAL/HIGH/MEDIUM/LOW), writes a recommended action with options and deadlines, notifies via SNS, and sends a customer reassurance SMS.',
-    tools: ['escalate_to_human → DynamoDB + SNS publish','send_sms → customer reassurance','SNS → dispatcher phone notification'],
-    metrics: [['<10s','Duration'],['Monitoring / Reception','Trigger'],['3','Tool calls'],['1.4%','Escalation rate']]
-  },
-  {
-    title: 'Analytics Agent',
-    desc: 'Runs daily at 23:59 WAT. Aggregates order metrics, builds a rider leaderboard, generates an executive summary with Claude, and emails it to the ops team via Amazon SES.',
-    tools: ['query_delivery_metrics → DynamoDB scan','query_rider_performance → DynamoDB','send_email_report → Amazon SES'],
-    metrics: [['Daily 23:59','Schedule'],['EventBridge cron','Trigger'],['3','Tool calls'],['100%','Report delivery']]
-  }
-];
-
-document.querySelectorAll('.pipeline-step').forEach(step => {
-  step.addEventListener('click', () => {
-    const idx = parseInt(step.dataset.stage);
-    document.querySelectorAll('.pipeline-step').forEach(s => s.classList.remove('active'));
-    step.classList.add('active');
-    const s = stages[idx];
-    document.getElementById('pd-title').textContent = s.title;
-    document.getElementById('pd-desc').textContent = s.desc;
-    document.getElementById('pd-tools').innerHTML = s.tools.map(t => `<li>${t}</li>`).join('');
-    document.getElementById('pd-metrics').innerHTML = s.metrics.map(([v,k]) =>
-      `<div class="metric-mini"><div class="metric-mini-val">${v}</div><div class="metric-mini-key">${k}</div></div>`
-    ).join('');
-    document.getElementById('pipelineDetail').classList.add('active');
-  });
-});
 
 // ── RESULT HELPERS ────────────────────────────────────────────
 function clearResult(){
