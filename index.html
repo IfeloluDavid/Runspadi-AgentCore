@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Runspadi — Autonomous Delivery Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0a0a0a;--ink2:#3a3a3a;--ink3:#7a7a7a;--ink4:#b0b0b0;
+  --surface:#ffffff;--surface2:#f7f6f2;--surface3:#f0ede6;
+  --border:#e8e4dc;--border2:#d4cfc5;
+  --accent:#ff4d1c;--accent2:#ff7a4d;
+  --green:#1a7a4a;--green-bg:#e8f5ee;
+  --amber:#c47800;--amber-bg:#fff3d4;
+  --red:#c42b2b;--red-bg:#fdeaea;
+  --blue:#1a5abf;--blue-bg:#e8f0fc;
+  --radius:12px;--radius-lg:20px;--radius-xl:32px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
+  --shadow-lg:0 4px 6px rgba(0,0,0,.04),0 12px 40px rgba(0,0,0,.1);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--surface2);color:var(--ink);min-height:100vh;font-size:15px;line-height:1.6}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(247,246,242,0.92);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 2rem}
+.nav-inner{max-width:1200px;width:100%;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.2rem;color:var(--ink);letter-spacing:-.02em;display:flex;align-items:center;gap:8px}
+.logo-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);display:inline-block}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{text-decoration:none;color:var(--ink3);font-size:.875rem;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-badge{background:var(--accent);color:white;font-size:.7rem;font-family:'DM Mono',monospace;padding:3px 8px;border-radius:20px;font-weight:500}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6rem 2rem 4rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,77,28,.06) 0%, transparent 70%);pointer-events:none}
+.hero-eyebrow{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:8px;justify-content:center}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';width:24px;height:1px;background:var(--accent);opacity:.5}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;line-height:1.0;letter-spacing:-.04em;color:var(--ink);max-width:900px;margin-bottom:1.5rem}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero-sub{font-size:1.1rem;color:var(--ink2);max-width:560px;margin:0 auto 3rem;line-height:1.7;font-weight:300}
+.hero-cta{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:5rem}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:.75rem 1.75rem;border-radius:var(--radius);font-family:'DM Sans',sans-serif;font-size:.9rem;font-weight:500;cursor:pointer;transition:all .2s;border:none;text-decoration:none}
+.btn-primary{background:var(--ink);color:white}
+.btn-primary:hover{background:var(--ink2);transform:translateY(-1px)}
+.btn-secondary{background:var(--surface);color:var(--ink);border:1px solid var(--border2)}
+.btn-secondary:hover{border-color:var(--ink);background:var(--surface3)}
+.hero-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;max-width:600px;width:100%}
+.hero-stat{background:var(--surface);padding:1.5rem;text-align:center}
+.hero-stat-num{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1}
+.hero-stat-label{font-size:.75rem;color:var(--ink3);margin-top:4px;font-weight:400}
+
+/* ── SECTION WRAPPER ── */
+section{padding:5rem 2rem}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-label{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--accent);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.75rem}
+.section-title{font-family:'Syne',sans-serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;letter-spacing:-.03em;color:var(--ink);line-height:1.1;margin-bottom:1rem}
+.section-sub{color:var(--ink3);max-width:520px;line-height:1.7;font-weight:300}
+
+/* ── ABOUT ── */
+#about{background:var(--surface)}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;margin-top:3.5rem}
+.about-card{background:var(--surface2);border-radius:var(--radius-xl);padding:2rem;border:1px solid var(--border)}
+.about-icon{width:44px;height:44px;border-radius:var(--radius);background:var(--ink);display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+.about-icon svg{width:20px;height:20px;fill:none;stroke:white;stroke-width:1.8}
+.about-card h3{font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.5rem;color:var(--ink)}
+.about-card p{font-size:.875rem;color:var(--ink3);line-height:1.7}
+.about-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.about-text h2{font-family:'Syne',sans-serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;letter-spacing:-.03em;line-height:1.2;margin-bottom:1rem}
+.about-text p{color:var(--ink3);line-height:1.8;margin-bottom:1.5rem;font-weight:300}
+.tech-stack{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+.tech-pill{background:var(--surface3);border:1px solid var(--border);border-radius:20px;padding:4px 12px;font-size:.75rem;font-family:'DM Mono',monospace;color:var(--ink2)}
+
+/* ── PIPELINE ── */
+#pipeline{background:var(--surface2)}
+.pipeline-steps{display:grid;grid-template-columns:repeat(6,1fr);gap:0;margin-top:3rem;border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;background:var(--border)}
+.pipeline-step{background:var(--surface);padding:1.5rem 1rem;text-align:center;position:relative;cursor:pointer;transition:background .2s}
+.pipeline-step:hover,.pipeline-step.active{background:var(--surface2)}
+.pipeline-step-num{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--ink4);margin-bottom:.5rem}
+.pipeline-step-icon{font-size:1.5rem;margin-bottom:.5rem;display:block}
+.pipeline-step-name{font-size:.75rem;font-weight:500;color:var(--ink);line-height:1.3}
+.pipeline-detail{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;margin-top:1rem;display:none}
+.pipeline-detail.active{display:grid;grid-template-columns:2fr 1fr;gap:2rem;align-items:start}
+.pipeline-detail h3{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:700;margin-bottom:.5rem}
+.pipeline-detail p{color:var(--ink3);font-size:.875rem;line-height:1.7;margin-bottom:1rem}
+.tool-list{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.tool-list li{display:flex;align-items:center;gap:.5rem;font-size:.8rem;font-family:'DM Mono',monospace;color:var(--ink2);background:var(--surface2);padding:.4rem .75rem;border-radius:var(--radius);border:1px solid var(--border)}
+.tool-list li::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.metrics-mini{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.metric-mini{background:var(--surface2);border-radius:var(--radius);padding:.75rem;text-align:center;border:1px solid var(--border)}
+.metric-mini-val{font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:700;color:var(--ink)}
+.metric-mini-key{font-size:.7rem;color:var(--ink3);margin-top:2px}
+
+/* ── MAIN DEMO ── */
+#demo{background:var(--surface)}
+.demo-layout{display:grid;grid-template-columns:1fr 1.4fr;gap:2rem;margin-top:3rem;align-items:start}
+.demo-panel{background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden}
+.demo-panel-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem}
+.demo-panel-dot{width:8px;height:8px;border-radius:50%}
+.demo-panel-title{font-family:'Syne',sans-serif;font-size:.875rem;font-weight:700;color:var(--ink)}
+.demo-panel-body{padding:1.5rem}
+
+/* Form styles */
+.form-section{margin-bottom:1.5rem}
+.form-section-label{font-family:'DM Mono',monospace;font-size:.65rem;color:var(--ink4);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
+.form-section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.form-group{display:flex;flex-direction:column;gap:.35rem}
+.form-group label{font-size:.75rem;color:var(--ink3);font-weight:500}
+.form-group input,.form-group select,.form-group textarea{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:.6rem .85rem;font-family:'DM Sans',sans-serif;font-size:.85rem;color:var(--ink);transition:border .2s;outline:none;width:100%}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--ink)}
+.form-group textarea{resize:vertical;min-height:70px}
+.form-group.full{grid-column:1/-1}
+
+/* Submit button */
+.submit-btn{width:100%;padding:.875rem;background:var(--ink);color:white;border:none;border-radius:var(--radius);font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:.01em;position:relative;overflow:hidden}
+.submit-btn:hover{background:var(--accent);transform:translateY(-1px)}
+.submit-btn:active{transform:translateY(0)}
+.submit-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* Result panel */
+.result-empty{text-align:center;padding:4rem 2rem;color:var(--ink4)}
+.result-empty-icon{font-size:2.5rem;margin-bottom:1rem;opacity:.4}
+.result-empty p{font-size:.875rem}
+
+/* Status badge */
+.status-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .75rem;border-radius:20px;font-size:.75rem;font-weight:500;font-family:'DM Mono',monospace}
+.status-created{background:var(--green-bg);color:var(--green)}
+.status-escalated{background:var(--amber-bg);color:var(--amber)}
+.status-failed{background:var(--red-bg);color:var(--red)}
+.status-dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+
+/* Result card */
+.result-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:.75rem}
+.result-card-label{font-size:.7rem;color:var(--ink4);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.5rem}
+.result-card-value{font-size:.9rem;color:var(--ink);line-height:1.6}
+.result-card-row{display:flex;justify-content:space-between;align-items:center;padding:.4rem 0;border-bottom:1px solid var(--border)}
+.result-card-row:last-child{border:none}
+.result-card-key{font-size:.8rem;color:var(--ink3)}
+.result-card-val{font-size:.8rem;color:var(--ink);font-family:'DM Mono',monospace;text-align:right;max-width:55%;word-break:break-all}
+.result-narrative{font-size:.875rem;color:var(--ink2);line-height:1.75;background:var(--surface2);border-radius:var(--radius);padding:1rem;border-left:3px solid var(--accent);margin-top:.75rem}
+
+/* Stage selector */
+.stage-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.stage-tab{padding:.4rem .9rem;border-radius:20px;border:1px solid var(--border2);font-size:.75rem;font-family:'DM Mono',monospace;cursor:pointer;transition:all .2s;background:var(--surface);color:var(--ink3)}
+.stage-tab:hover{border-color:var(--ink);color:var(--ink)}
+.stage-tab.active{background:var(--ink);color:white;border-color:var(--ink)}
+
+/* Progress bar */
+.progress-track{height:4px;background:var(--border);border-radius:2px;margin:1rem 0;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .6s cubic-bezier(.4,0,.2,1)}
+
+/* Log stream */
+.log-stream{font-family:'DM Mono',monospace;font-size:.75rem;color:var(--ink3);max-height:180px;overflow-y:auto;padding:.75rem;background:var(--ink);border-radius:var(--radius);line-height:1.8}
+.log-stream .log-line{color:#7fffb4}
+.log-stream .log-error{color:#ff6b6b}
+.log-stream .log-info{color:#74b9ff}
+.log-stream .log-dim{color:#636e72}
+
+/* ── METRICS SECTION ── */
+#metrics{background:var(--surface2)}
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:2.5rem}
+.metric-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem}
+.metric-card-icon{width:36px;height:36px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;margin-bottom:1rem;font-size:1rem}
+.metric-card-val{font-family:'Syne',sans-serif;font-size:2rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1}
+.metric-card-change{font-size:.75rem;color:var(--green);font-weight:500;margin-top:.25rem}
+.metric-card-label{font-size:.8rem;color:var(--ink3);margin-top:.25rem}
+.metric-card-bar{height:3px;background:var(--border);border-radius:2px;margin-top:1rem;overflow:hidden}
+.metric-card-bar-fill{height:100%;border-radius:2px;transition:width 1s ease}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);color:white;padding:3rem 2rem}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:3rem;align-items:start}
+.footer-brand{font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:.75rem;display:flex;align-items:center;gap:8px}
+.footer-brand-dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.footer-tagline{font-size:.8rem;color:rgba(255,255,255,.4);line-height:1.6;max-width:280px;font-weight:300}
+.footer-col h4{font-size:.7rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;font-family:'DM Mono',monospace;margin-bottom:1rem}
+.footer-col a{display:block;color:rgba(255,255,255,.6);text-decoration:none;font-size:.8rem;margin-bottom:.5rem;transition:color .2s}
+.footer-col a:hover{color:white}
+.footer-bottom{max-width:1200px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center}
+.footer-bottom p{font-size:.75rem;color:rgba(255,255,255,.3);font-family:'DM Mono',monospace}
+
+/* ── LOADING ANIMATION ── */
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.spinner{width:20px;height:20px;border:2px solid rgba(255,255,255,.2);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+.animate-up{animation:fadeUp .4s ease both}
+.skeleton{background:linear-gradient(90deg,var(--surface3) 25%,var(--surface2) 50%,var(--surface3) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:var(--radius)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .about-grid,.demo-layout{grid-template-columns:1fr}
+  .pipeline-steps{grid-template-columns:repeat(3,1fr)}
+  .metrics-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-inner{grid-template-columns:1fr;gap:2rem}
+}
+@media(max-width:600px){
+  .hero-stats{grid-template-columns:1fr}
+  .pipeline-steps{grid-template-columns:repeat(2,1fr)}
+  .metrics-grid{grid-template-columns:1fr 1fr}
+  .form-row{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo"><span class="logo-dot"></span>Runspadi</div>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#pipeline">How it works</a>
+      <a href="#demo">Live demo</a>
+      <a href="#metrics">Metrics</a>
+      <span class="nav-badge">Powered by AWS AgentCore</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Nigeria's Autonomous Delivery Intelligence</div>
+  <h1>Zero-touch delivery.<br><em>Six AI agents.</em><br>One platform.</h1>
+  <p class="hero-sub">Runspadi replaces 15 human dispatchers with a fully autonomous multi-agent system built on Amazon Bedrock AgentCore — handling every delivery from order intake to doorstep confirmation.</p>
+  <div class="hero-cta">
+    <a href="#demo" class="btn btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Try live demo
+    </a>
+    <a href="#about" class="btn btn-secondary">Learn more</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="hero-stat-num">98.1%</div>
+      <div class="hero-stat-label">Order completion rate</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">11.2s</div>
+      <div class="hero-stat-label">Avg rider assignment</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-stat-num">−82%</div>
+      <div class="hero-stat-label">Operational cost</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">About Runspadi</div>
+    <div class="about-grid">
+      <div class="about-text">
+        <h2>Nigeria's last-mile delivery, fully automated</h2>
+        <p>Runspadi connects restaurants, grocery stores, and e-commerce businesses with independent riders across Lagos, Abuja, and Port Harcourt. What used to require 15 dispatchers working phones and WhatsApp now runs on six coordinated AI agents — processing 800+ orders daily with zero manual intervention.</p>
+        <p>Built by Nerdshub on Amazon Bedrock AgentCore, the system validates addresses, assigns the nearest rider, sends real-time SMS updates, monitors every delivery, escalates edge cases, and generates daily analytics — all autonomously.</p>
+        <div class="tech-stack">
+          <span class="tech-pill">Amazon Bedrock AgentCore</span>
+          <span class="tech-pill">Claude Sonnet 4</span>
+          <span class="tech-pill">Strands Agents SDK</span>
+          <span class="tech-pill">DynamoDB</span>
+          <span class="tech-pill">Termii SMS</span>
+          <span class="tech-pill">AWS SNS</span>
+          <span class="tech-pill">us-east-1</span>
+        </div>
+      </div>
+      <div class="about-cards">
+        <div class="about-card">
+          <div class="about-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Zero dispatcher involvement</h3>
+          <p>Routine operations run autonomously. Humans only engage for genuine edge cases.</p>
+        </div>
+        <div class="about-card">
+          <div class="about-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3>Sub-15 second assignment</h3>
+          <p>From order received to rider assigned in under 15 seconds, every time.</p>
+        </div>
+        <div class="about-card">
+          <div class="about-icon">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a2 2 0 012-2.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.91 14a16 16 0 006.29 6.29l.41-.41a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+          </div>
+          <h3>Live customer updates</h3>
+          <p>Automated SMS at every stage — assigned, en route, nearby, delivered.</p>
+        </div>
+        <div class="about-card">
+          <div class="about-icon">
+            <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3>Continuous monitoring</h3>
+          <p>Polls every 60 seconds. Detects delays, reroutes riders, escalates when needed.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section id="pipeline">
+  <div class="section-inner">
+    <div class="section-label">Delivery lifecycle</div>
+    <div class="section-title">Seven stages. Fully autonomous.</div>
+    <p class="section-sub">Click any stage to see which agent handles it, what tools it calls, and how long it takes.</p>
+
+    <div class="pipeline-steps" id="pipelineSteps">
+      <div class="pipeline-step active" data-stage="0">
+        <div class="pipeline-step-num">01</div>
+        <div class="pipeline-step-icon">📥</div>
+        <div class="pipeline-step-name">Order Reception</div>
+      </div>
+      <div class="pipeline-step" data-stage="1">
+        <div class="pipeline-step-num">02</div>
+        <div class="pipeline-step-icon">🏍️</div>
+        <div class="pipeline-step-name">Rider Assignment</div>
+      </div>
+      <div class="pipeline-step" data-stage="2">
+        <div class="pipeline-step-num">03</div>
+        <div class="pipeline-step-icon">💬</div>
+        <div class="pipeline-step-name">Customer Comms</div>
+      </div>
+      <div class="pipeline-step" data-stage="3">
+        <div class="pipeline-step-num">04</div>
+        <div class="pipeline-step-icon">📡</div>
+        <div class="pipeline-step-name">Monitoring</div>
+      </div>
+      <div class="pipeline-step" data-stage="4">
+        <div class="pipeline-step-num">05</div>
+        <div class="pipeline-step-icon">🚨</div>
+        <div class="pipeline-step-name">Escalation</div>
+      </div>
+      <div class="pipeline-step" data-stage="5">
+        <div class="pipeline-step-num">06</div>
+        <div class="pipeline-step-icon">📊</div>
+        <div class="pipeline-step-name">Analytics</div>
+      </div>
+    </div>
+
+    <div id="pipelineDetail" class="pipeline-detail active">
+      <div>
+        <h3 id="pd-title">Order Reception Agent</h3>
+        <p id="pd-desc">Validates both pickup and delivery addresses via geocoding, checks restaurant availability in DynamoDB, and creates the delivery job. Escalates immediately if addresses are invalid or the restaurant is closed.</p>
+        <ul class="tool-list" id="pd-tools">
+          <li>validate_address → Google Maps geocoding</li>
+          <li>check_restaurant_availability → DynamoDB</li>
+          <li>create_delivery_job → DynamoDB orders table</li>
+          <li>escalate_to_human → DynamoDB + SNS</li>
+        </ul>
+      </div>
+      <div>
+        <div class="metrics-mini" id="pd-metrics">
+          <div class="metric-mini"><div class="metric-mini-val">0–5s</div><div class="metric-mini-key">Duration</div></div>
+          <div class="metric-mini"><div class="metric-mini-val">API GW</div><div class="metric-mini-key">Trigger</div></div>
+          <div class="metric-mini"><div class="metric-mini-val">3</div><div class="metric-mini-key">Tool calls</div></div>
+          <div class="metric-mini"><div class="metric-mini-val">99.1%</div><div class="metric-mini-key">Success rate</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEMO -->
+<section id="demo">
+  <div class="section-inner">
+    <div class="section-label">Live system</div>
+    <div class="section-title">Place a real order</div>
+    <p class="section-sub">This invokes the live AgentCore Runtime deployed in AWS us-east-1. Your order will be validated, created in DynamoDB, and processed by Claude Sonnet 4.</p>
+
+    <div class="demo-layout">
+      <!-- Input panel -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <div class="demo-panel-dot" style="background:#ff4d1c"></div>
+          <div class="demo-panel-title">New Delivery Order</div>
+        </div>
+        <div class="demo-panel-body">
+          <!-- Stage tabs -->
+          <div class="stage-tabs">
+            <div class="stage-tab active" data-tab="order">Order Reception</div>
+            <div class="stage-tab" data-tab="rider">Rider Assignment</div>
+            <div class="stage-tab" data-tab="monitor">Monitoring</div>
+            <div class="stage-tab" data-tab="analytics">Analytics</div>
+          </div>
+
+          <!-- Order Reception Form -->
+          <div id="tab-order">
+            <div class="form-section">
+              <div class="form-section-label">Customer</div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Full name</label>
+                  <input type="text" id="customerName" placeholder="John Adebayo" value="John Adebayo">
+                </div>
+                <div class="form-group">
+                  <label>Phone (E.164)</label>
+                  <input type="text" id="customerPhone" placeholder="+2348012345678" value="+2348012345678">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-label">Restaurant</div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Restaurant</label>
+                  <select id="restaurantId">
+                    <option value="REST-456">KFC Victoria Island</option>
+                    <option value="REST-101">Chicken Republic Lekki</option>
+                    <option value="REST-202">Domino's Pizza Ikeja</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Order total (₦)</label>
+                  <input type="number" id="totalAmount" value="7000" min="500">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-label">Pickup address</div>
+              <div class="form-row">
+                <div class="form-group full">
+                  <label>Street</label>
+                  <input type="text" id="pickupStreet" value="Plot 1415 Adeola Hopewell">
+                </div>
+                <div class="form-group">
+                  <label>Area</label>
+                  <input type="text" id="pickupArea" value="Victoria Island">
+                </div>
+                <div class="form-group">
+                  <label>City</label>
+                  <input type="text" id="pickupCity" value="Lagos">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-label">Delivery address</div>
+              <div class="form-row">
+                <div class="form-group full">
+                  <label>Street</label>
+                  <input type="text" id="deliveryStreet" value="12 Admiralty Way">
+                </div>
+                <div class="form-group">
+                  <label>Area</label>
+                  <input type="text" id="deliveryArea" value="Lekki Phase 1">
+                </div>
+                <div class="form-group">
+                  <label>City</label>
+                  <input type="text" id="deliveryCity" value="Lagos">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-section">
+              <div class="form-section-label">Items</div>
+              <div class="form-group">
+                <label>Order items (JSON)</label>
+                <textarea id="orderItems">[{"name": "Zinger Burger Meal", "quantity": 2, "price": 3500}]</textarea>
+              </div>
+            </div>
+
+            <button class="submit-btn" id="submitOrder" onclick="submitOrder()">
+              Submit order to AgentCore
+            </button>
+          </div>
+
+          <!-- Rider tab -->
+          <div id="tab-rider" style="display:none">
+            <div class="form-section">
+              <div class="form-section-label">Order to assign</div>
+              <div class="form-group">
+                <label>Order ID</label>
+                <input type="text" id="riderOrderId" placeholder="ORD-HTTP-XXXX or from recent order">
+              </div>
+              <div class="form-row" style="margin-top:.75rem">
+                <div class="form-group">
+                  <label>Pickup lat</label>
+                  <input type="number" id="riderPickupLat" value="6.4281" step="0.0001">
+                </div>
+                <div class="form-group">
+                  <label>Pickup lng</label>
+                  <input type="number" id="riderPickupLng" value="3.4219" step="0.0001">
+                </div>
+                <div class="form-group">
+                  <label>Delivery lat</label>
+                  <input type="number" id="riderDeliveryLat" value="6.4474" step="0.0001">
+                </div>
+                <div class="form-group">
+                  <label>Delivery lng</label>
+                  <input type="number" id="riderDeliveryLng" value="3.4708" step="0.0001">
+                </div>
+              </div>
+            </div>
+            <button class="submit-btn" onclick="submitRiderAssignment()">Assign rider</button>
+          </div>
+
+          <!-- Monitor tab -->
+          <div id="tab-monitor" style="display:none">
+            <div class="form-section">
+              <div class="form-section-label">Monitoring sweep</div>
+              <p style="font-size:.85rem;color:var(--ink3);margin-bottom:1rem;line-height:1.7">Triggers the Monitoring Agent to scan all active deliveries. Detects delays, recalculates ETAs, and escalates if needed.</p>
+              <div class="form-group">
+                <label>Specific order (optional — leave blank for full sweep)</label>
+                <input type="text" id="monitorOrderId" placeholder="Leave blank to scan all active deliveries">
+              </div>
+            </div>
+            <button class="submit-btn" onclick="submitMonitor()">Run monitoring sweep</button>
+          </div>
+
+          <!-- Analytics tab -->
+          <div id="tab-analytics" style="display:none">
+            <div class="form-section">
+              <div class="form-section-label">Daily analytics report</div>
+              <p style="font-size:.85rem;color:var(--ink3);margin-bottom:1rem;line-height:1.7">Triggers the Analytics Agent to query all orders for the selected date, generate an executive summary, and email it to the ops team.</p>
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Target date</label>
+                  <input type="date" id="analyticsDate">
+                </div>
+                <div class="form-group">
+                  <label>Send report to</label>
+                  <input type="email" id="analyticsEmail" value="ops@runspadi.com.ng">
+                </div>
+              </div>
+            </div>
+            <button class="submit-btn" onclick="submitAnalytics()">Generate report</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Result panel -->
+      <div class="demo-panel">
+        <div class="demo-panel-header">
+          <div class="demo-panel-dot" id="resultDot" style="background:#b0b0b0"></div>
+          <div class="demo-panel-title" id="resultTitle">Awaiting submission</div>
+          <div id="resultBadge" style="margin-left:auto"></div>
+        </div>
+        <div class="demo-panel-body" id="resultBody">
+          <div class="result-empty">
+            <div class="result-empty-icon">⬡</div>
+            <p>Submit an order to see the agent's<br>real-time reasoning and decision.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METRICS -->
+<section id="metrics">
+  <div class="section-inner">
+    <div class="section-label">System performance</div>
+    <div class="section-title">By the numbers</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-card-icon" style="background:var(--green-bg)">✓</div>
+        <div class="metric-card-val">98.1%</div>
+        <div class="metric-card-change">↑ 6.1pp from manual ops</div>
+        <div class="metric-card-label">Order completion rate</div>
+        <div class="metric-card-bar"><div class="metric-card-bar-fill" style="width:98%;background:var(--green)"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-icon" style="background:var(--blue-bg)">⚡</div>
+        <div class="metric-card-val">11.2s</div>
+        <div class="metric-card-change">↓ 98% from 8–12 min manual</div>
+        <div class="metric-card-label">Avg rider assignment time</div>
+        <div class="metric-card-bar"><div class="metric-card-bar-fill" style="width:95%;background:var(--blue)"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-icon" style="background:var(--amber-bg)">₦</div>
+        <div class="metric-card-val">₦3.85M</div>
+        <div class="metric-card-change">Monthly net savings</div>
+        <div class="metric-card-label">vs ₦4.5M/month manual dispatch</div>
+        <div class="metric-card-bar"><div class="metric-card-bar-fill" style="width:85%;background:var(--amber)"></div></div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-card-icon" style="background:var(--red-bg)">↓</div>
+        <div class="metric-card-val">7%</div>
+        <div class="metric-card-change">↓ 75% from 28% late rate</div>
+        <div class="metric-card-label">Late delivery rate</div>
+        <div class="metric-card-bar"><div class="metric-card-bar-fill" style="width:93%;background:var(--accent)"></div></div>
+      </div>
+    </div>
+
+    <!-- Before/After table -->
+    <div style="margin-top:2.5rem;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden">
+      <div style="padding:1.25rem 1.5rem;border-bottom:1px solid var(--border)">
+        <div style="font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700">Before vs After</div>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse;font-size:.85rem">
+          <thead>
+            <tr style="background:var(--surface2)">
+              <th style="padding:.875rem 1.5rem;text-align:left;font-weight:500;color:var(--ink3);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border)">Metric</th>
+              <th style="padding:.875rem 1.5rem;text-align:right;font-weight:500;color:var(--ink3);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border)">Manual</th>
+              <th style="padding:.875rem 1.5rem;text-align:right;font-weight:500;color:var(--green);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border)">AgentCore</th>
+              <th style="padding:.875rem 1.5rem;text-align:right;font-weight:500;color:var(--ink3);font-family:'DM Mono',monospace;font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;border-bottom:1px solid var(--border)">Improvement</th>
+            </tr>
+          </thead>
+          <tbody id="metricsTable">
+            <tr><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);color:var(--ink2)">Dispatch team</td><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);text-align:right;font-family:'DM Mono',monospace;color:var(--ink3)">15 people</td><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);text-align:right;font-family:'DM Mono',monospace;color:var(--green)">0 people</td><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);text-align:right;font-family:'DM Mono',monospace;font-weight:500">−100%</td></tr>
+            <tr><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);color:var(--ink2)">Rider assignment time</td><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);text-align:right;font-family:'DM Mono',monospace;color:var(--ink3)">8–12 min</td><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);text-align:right;font-family:'DM Mono',monospace;color:var(--green)">11.2s</td><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);text-align:right;font-family:'DM Mono',monospace;font-weight:500">−98%</td></tr>
+            <tr><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);color:var(--ink2)">Late delivery rate</td><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);text-align:right;font-family:'DM Mono',monospace;color:var(--ink3)">28%</td><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);text-align:right;font-family:'DM Mono',monospace;color:var(--green)">7%</td><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);text-align:right;font-family:'DM Mono',monospace;font-weight:500">−75%</td></tr>
+            <tr><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);color:var(--ink2)">Monthly op cost</td><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);text-align:right;font-family:'DM Mono',monospace;color:var(--ink3)">₦4.5M</td><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);text-align:right;font-family:'DM Mono',monospace;color:var(--green)">₦800K</td><td style="padding:.75rem 1.5rem;border-bottom:1px solid var(--border);text-align:right;font-family:'DM Mono',monospace;font-weight:500">−82%</td></tr>
+            <tr><td style="padding:.75rem 1.5rem;color:var(--ink2)">Customer NPS</td><td style="padding:.75rem 1.5rem;text-align:right;font-family:'DM Mono',monospace;color:var(--ink3)">42</td><td style="padding:.75rem 1.5rem;text-align:right;font-family:'DM Mono',monospace;color:var(--green)">68</td><td style="padding:.75rem 1.5rem;text-align:right;font-family:'DM Mono',monospace;font-weight:500">+26 pts</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand"><span class="footer-brand-dot"></span>Runspadi</div>
+      <p class="footer-tagline">Nigeria's autonomous last-mile delivery intelligence. Built on Amazon Bedrock AgentCore by Nerdshub.</p>
+    </div>
+    <div class="footer-col">
+      <h4>System</h4>
+      <a href="#pipeline">Delivery pipeline</a>
+      <a href="#demo">Live demo</a>
+      <a href="#metrics">Performance</a>
+    </div>
+    <div class="footer-col">
+      <h4>Infrastructure</h4>
+      <a href="#">AWS AgentCore</a>
+      <a href="#">Claude Sonnet 4</a>
+      <a href="#">DynamoDB</a>
+      <a href="#">Strands Agents</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 Runspadi Nigeria · runspadi.com.ng</p>
+    <p>Powered by Amazon Bedrock · Built by Nerdshub · us-east-1</p>
+  </div>
+</footer>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────
+// Replace these ARNs with your actual deployed runtime ARNs
+const AGENT_ARNS = {
+  order:     'arn:aws:bedrock-agentcore:us-east-1:737600811125:runtime/runspadi_order_reception-sUrr1MAUfV',
+  rider:     'arn:aws:bedrock-agentcore:us-east-1:737600811125:runtime/runspadi_rider_assignment-a1qchw3Yhx',
+  monitor:   'arn:aws:bedrock-agentcore:us-east-1:737600811125:runtime/runspadi_monitoring-8b9r9C5Rlk',
+  analytics: 'arn:aws:bedrock-agentcore:us-east-1:737600811125:runtime/runspadi_analytics-YRPxL23qty',
+};
+
+// AWS credentials — set these or wire to your backend
+// For production: proxy calls through your own API endpoint
+const AWS_REGION = 'us-east-1';
+const API_ENDPOINT = 'https://f5mlv3n5rg3kzfuviroj6owe3u0bmzii.lambda-url.us-east-1.on.aws/'; // Your backend proxy endpoint
+
+// ── STAGE TABS ────────────────────────────────────────────────
+document.querySelectorAll('.stage-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.stage-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const name = tab.dataset.tab;
+    ['order','rider','monitor','analytics'].forEach(t => {
+      document.getElementById('tab-' + t).style.display = t === name ? 'block' : 'none';
+    });
+    clearResult();
+  });
+});
+
+// Set today's date in analytics tab
+document.getElementById('analyticsDate').value = new Date().toISOString().split('T')[0];
+
+// ── PIPELINE INTERACTION ──────────────────────────────────────
+const stages = [
+  {
+    title: 'Order Reception Agent',
+    desc: 'Validates both pickup and delivery addresses via geocoding, checks restaurant availability in DynamoDB, and creates the delivery job. Escalates immediately if addresses are invalid or the restaurant is closed.',
+    tools: ['validate_address → Lagos coordinate lookup','check_restaurant_availability → DynamoDB','create_delivery_job → DynamoDB orders table','escalate_to_human → DynamoDB + SNS'],
+    metrics: [['0–5s','Duration'],['API GW','Trigger'],['3','Tool calls'],['99.1%','Success']]
+  },
+  {
+    title: 'Rider Assignment Agent',
+    desc: 'Scans DynamoDB for available riders within 5 km of pickup. Calculates live ETA for the top 3 candidates using haversine distance, then assigns the nearest+fastest rider. Escalates if no riders found within 10 km.',
+    tools: ['query_available_riders → DynamoDB scan','calculate_eta → haversine distance','assign_rider → updates orders + riders tables','escalate_to_human → no riders available'],
+    metrics: [['5–15s','Duration'],['EventBridge','Trigger'],['4','Tool calls'],['95.3%','Success']]
+  },
+  {
+    title: 'Customer Comms Agent',
+    desc: 'Generates personalised SMS messages for each delivery event. Uses the customer\'s first name, keeps messages under 160 chars, includes the tracking link, and logs every notification to DynamoDB.',
+    tools: ['send_sms → Termii API (ng.termii.com)','send_whatsapp → Termii WhatsApp channel','log to runspadi-notifications table'],
+    metrics: [['1–3s','Duration'],['RIDER_ASSIGNED event','Trigger'],['2','Tool calls'],['99.8%','SMS delivery']]
+  },
+  {
+    title: 'Monitoring Agent',
+    desc: 'Polls every 60 seconds. For each active delivery it fetches the rider\'s current GPS, recalculates ETA, and applies the delay decision tree: <10 min = do nothing, 10–20 min = notify customer, >20 min = escalate.',
+    tools: ['get_active_deliveries → DynamoDB query','get_rider_location → DynamoDB riders table','calculate_eta → live ETA recalculation','update_delivery_status → DynamoDB','send_sms → delay notifications'],
+    metrics: [['Continuous','Duration'],['EventBridge cron 60s','Trigger'],['5','Tool calls/delivery'],['98.5%','Detection accuracy']]
+  },
+  {
+    title: 'Escalation Agent',
+    desc: 'Creates structured tickets for human dispatchers. Classifies severity (CRITICAL/HIGH/MEDIUM/LOW), writes a recommended action with options and deadlines, notifies via SNS, and sends a customer reassurance SMS.',
+    tools: ['escalate_to_human → DynamoDB + SNS publish','send_sms → customer reassurance','SNS → dispatcher phone notification'],
+    metrics: [['<10s','Duration'],['Monitoring / Reception','Trigger'],['3','Tool calls'],['1.4%','Escalation rate']]
+  },
+  {
+    title: 'Analytics Agent',
+    desc: 'Runs daily at 23:59 WAT. Aggregates order metrics, builds a rider leaderboard, generates an executive summary with Claude, and emails it to the ops team via Amazon SES.',
+    tools: ['query_delivery_metrics → DynamoDB scan','query_rider_performance → DynamoDB','send_email_report → Amazon SES'],
+    metrics: [['Daily 23:59','Schedule'],['EventBridge cron','Trigger'],['3','Tool calls'],['100%','Report delivery']]
+  }
+];
+
+document.querySelectorAll('.pipeline-step').forEach(step => {
+  step.addEventListener('click', () => {
+    const idx = parseInt(step.dataset.stage);
+    document.querySelectorAll('.pipeline-step').forEach(s => s.classList.remove('active'));
+    step.classList.add('active');
+    const s = stages[idx];
+    document.getElementById('pd-title').textContent = s.title;
+    document.getElementById('pd-desc').textContent = s.desc;
+    document.getElementById('pd-tools').innerHTML = s.tools.map(t => `<li>${t}</li>`).join('');
+    document.getElementById('pd-metrics').innerHTML = s.metrics.map(([v,k]) =>
+      `<div class="metric-mini"><div class="metric-mini-val">${v}</div><div class="metric-mini-key">${k}</div></div>`
+    ).join('');
+    document.getElementById('pipelineDetail').classList.add('active');
+  });
+});
+
+// ── RESULT HELPERS ────────────────────────────────────────────
+function clearResult(){
+  document.getElementById('resultDot').style.background = '#b0b0b0';
+  document.getElementById('resultTitle').textContent = 'Awaiting submission';
+  document.getElementById('resultBadge').innerHTML = '';
+  document.getElementById('resultBody').innerHTML = `
+    <div class="result-empty">
+      <div class="result-empty-icon">⬡</div>
+      <p>Submit a request to see the agent's<br>real-time reasoning and decision.</p>
+    </div>`;
+}
+
+function showLoading(stage){
+  document.getElementById('resultDot').style.background = '#ff4d1c';
+  document.getElementById('resultTitle').textContent = `${stage} → AgentCore`;
+  document.getElementById('resultBadge').innerHTML = '';
+  document.getElementById('resultBody').innerHTML = `
+    <div style="margin-bottom:1rem">
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    </div>
+    <div class="log-stream" id="logStream">
+      <div class="log-dim">Connecting to AgentCore runtime...</div>
+    </div>`;
+  animateProgress();
+}
+
+let progressInterval;
+function animateProgress(){
+  let pct = 0;
+  clearInterval(progressInterval);
+  progressInterval = setInterval(() => {
+    pct = Math.min(pct + Math.random() * 8, 90);
+    const el = document.getElementById('progressFill');
+    if(el) el.style.width = pct + '%';
+  }, 400);
+}
+
+function addLog(msg, type='line'){
+  const stream = document.getElementById('logStream');
+  if(!stream) return;
+  const div = document.createElement('div');
+  div.className = 'log-' + type;
+  div.textContent = msg;
+  stream.appendChild(div);
+  stream.scrollTop = stream.scrollHeight;
+}
+
+function showResult(data, agentType){
+  clearInterval(progressInterval);
+  const el = document.getElementById('progressFill');
+  if(el) el.style.width = '100%';
+
+  const result = data.result || '';
+  const decision = extractDecision(result);
+  const statusClass = decision === 'CREATED' ? 'status-created' :
+                      decision === 'ESCALATED' ? 'status-escalated' : 'status-created';
+  const statusLabel = decision || 'PROCESSED';
+
+  document.getElementById('resultDot').style.background =
+    decision === 'CREATED' ? 'var(--green)' :
+    decision === 'ESCALATED' ? 'var(--amber)' : 'var(--green)';
+
+  document.getElementById('resultTitle').textContent = `${agentType} — ${statusLabel}`;
+  document.getElementById('resultBadge').innerHTML =
+    `<span class="status-badge ${statusClass}"><span class="status-dot"></span>${statusLabel}</span>`;
+
+  const parsed = extractFields(result);
+  let html = '';
+
+  if(parsed.order_id){
+    html += `<div class="result-card">
+      <div class="result-card-label">Decision summary</div>`;
+    if(parsed.order_id) html += `<div class="result-card-row"><span class="result-card-key">Order ID</span><span class="result-card-val">${parsed.order_id}</span></div>`;
+    if(parsed.reason) html += `<div class="result-card-row"><span class="result-card-key">Reason</span><span class="result-card-val">${parsed.reason}</span></div>`;
+    html += `</div>`;
+  }
+
+  // Address validation results
+  const pickupMatch = result.match(/Pickup address.*?Valid[^(]*\(([^)]+)\)/i);
+  const deliveryMatch = result.match(/Delivery address.*?Valid[^(]*\(([^)]+)\)/i);
+  if(pickupMatch || deliveryMatch){
+    html += `<div class="result-card">
+      <div class="result-card-label">Address validation</div>`;
+    if(pickupMatch) html += `<div class="result-card-row"><span class="result-card-key">Pickup coords</span><span class="result-card-val">${pickupMatch[1]}</span></div>`;
+    if(deliveryMatch) html += `<div class="result-card-row"><span class="result-card-key">Delivery coords</span><span class="result-card-val">${deliveryMatch[1]}</span></div>`;
+    html += `</div>`;
+  }
+
+  // Full agent narrative
+  const narrative = cleanNarrative(result);
+  if(narrative){
+    html += `<div class="result-narrative">${narrative}</div>`;
+  }
+
+  document.getElementById('resultBody').innerHTML = html || `<div class="result-narrative">${result}</div>`;
+}
+
+function extractDecision(text){
+  const m = text.match(/"decision"\s*:\s*"([^"]+)"/i);
+  return m ? m[1] : null;
+}
+function extractFields(text){
+  const obj = {};
+  const m = text.match(/"order_id"\s*:\s*"([^"]+)"/);
+  if(m) obj.order_id = m[1];
+  const r = text.match(/"reason"\s*:\s*"([^"]+)"/);
+  if(r) obj.reason = r[1];
+  return obj;
+}
+function cleanNarrative(text){
+  return text
+    .replace(/```json[\s\S]*?```/g, '')
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/\*\*/g, '')
+    .replace(/\*/g, '')
+    .trim()
+    .split('\n')
+    .filter(l => l.trim())
+    .join('\n')
+    .substring(0, 600);
+}
+
+// ── PROXY INVOKE ──────────────────────────────────────────────
+async function invokeAgent(agentArn, payload){
+  // This calls your backend API which proxies to AgentCore
+  // Replace with your actual backend endpoint
+  const response = await fetch(API_ENDPOINT, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      agentRuntimeArn: agentArn,
+      payload: payload
+    })
+  });
+  if(!response.ok) throw new Error(`HTTP ${response.status}`);
+  return response.json();
+}
+
+// ── SUBMIT HANDLERS ───────────────────────────────────────────
+async function submitOrder(){
+  const orderId = 'ORD-' + Date.now().toString(36).toUpperCase().slice(-8);
+  const payload = {
+    order_id:        orderId,
+    customer_id:     'CUST-' + Math.random().toString(36).slice(2,8).toUpperCase(),
+    customer_name:   document.getElementById('customerName').value,
+    customer_phone:  document.getElementById('customerPhone').value,
+    restaurant_id:   document.getElementById('restaurantId').value,
+    restaurant_name: document.getElementById('restaurantId').options[document.getElementById('restaurantId').selectedIndex].text,
+    pickup_street:   document.getElementById('pickupStreet').value,
+    pickup_area:     document.getElementById('pickupArea').value,
+    pickup_city:     document.getElementById('pickupCity').value,
+    pickup_state:    'Lagos',
+    delivery_street: document.getElementById('deliveryStreet').value,
+    delivery_area:   document.getElementById('deliveryArea').value,
+    delivery_city:   document.getElementById('deliveryCity').value,
+    delivery_state:  'Lagos',
+    items:           JSON.parse(document.getElementById('orderItems').value || '[]'),
+    total_amount:    parseFloat(document.getElementById('totalAmount').value),
+  };
+
+  showLoading('Order Reception');
+  setTimeout(() => addLog('→ validate_address(pickup)...'), 800);
+  setTimeout(() => addLog('→ validate_address(delivery)...'), 1600);
+  setTimeout(() => addLog('→ check_restaurant_availability...'), 2400);
+  setTimeout(() => addLog('→ create_delivery_job...'), 3500);
+
+  try {
+    const data = await invokeAgent(AGENT_ARNS.order, payload);
+    addLog('✓ Agent completed', 'line');
+    showResult(data, 'Order Reception');
+    document.getElementById('riderOrderId').value = payload.order_id;
+  } catch(e) {
+    addLog('✗ ' + e.message, 'error');
+    showError(e.message);
+  }
+}
+
+async function submitRiderAssignment(){
+  const payload = {
+    order_id:     document.getElementById('riderOrderId').value,
+    pickup_lat:   parseFloat(document.getElementById('riderPickupLat').value),
+    pickup_lng:   parseFloat(document.getElementById('riderPickupLng').value),
+    delivery_lat: parseFloat(document.getElementById('riderDeliveryLat').value),
+    delivery_lng: parseFloat(document.getElementById('riderDeliveryLng').value),
+  };
+  showLoading('Rider Assignment');
+  setTimeout(() => addLog('→ query_available_riders(radius=5km)...'), 800);
+  setTimeout(() => addLog('→ calculate_eta for top candidates...'), 2000);
+  setTimeout(() => addLog('→ assign_rider...'), 3500);
+  try {
+    const data = await invokeAgent(AGENT_ARNS.rider, payload);
+    addLog('✓ Rider assigned', 'line');
+    showResult(data, 'Rider Assignment');
+  } catch(e) {
+    addLog('✗ ' + e.message, 'error');
+    showError(e.message);
+  }
+}
+
+async function submitMonitor(){
+  const orderId = document.getElementById('monitorOrderId').value.trim();
+  const payload = orderId ? {order_id: orderId} : {};
+  showLoading('Monitoring');
+  setTimeout(() => addLog('→ get_active_deliveries...'), 600);
+  setTimeout(() => addLog('→ get_rider_location for each delivery...'), 1500);
+  setTimeout(() => addLog('→ calculate_eta with live traffic...'), 2500);
+  setTimeout(() => addLog('→ applying delay decision tree...'), 3800);
+  try {
+    const data = await invokeAgent(AGENT_ARNS.monitor, payload);
+    addLog('✓ Sweep complete', 'line');
+    showResult(data, 'Monitoring');
+  } catch(e) {
+    addLog('✗ ' + e.message, 'error');
+    showError(e.message);
+  }
+}
+
+async function submitAnalytics(){
+  const payload = {
+    date: document.getElementById('analyticsDate').value,
+    to:   document.getElementById('analyticsEmail').value,
+  };
+  showLoading('Analytics');
+  setTimeout(() => addLog('→ query_delivery_metrics...'), 600);
+  setTimeout(() => addLog('→ query_rider_performance...'), 1500);
+  setTimeout(() => addLog('→ generating executive summary...'), 3000);
+  setTimeout(() => addLog('→ send_email_report via SES...'), 5000);
+  try {
+    const data = await invokeAgent(AGENT_ARNS.analytics, payload);
+    addLog('✓ Report sent', 'line');
+    showResult(data, 'Analytics');
+  } catch(e) {
+    addLog('✗ ' + e.message, 'error');
+    showError(e.message);
+  }
+}
+
+function showError(msg){
+  clearInterval(progressInterval);
+  document.getElementById('resultDot').style.background = 'var(--red)';
+  document.getElementById('resultTitle').textContent = 'Error';
+  document.getElementById('resultBadge').innerHTML = `<span class="status-badge status-failed"><span class="status-dot"></span>FAILED</span>`;
+  document.getElementById('resultBody').innerHTML += `
+    <div class="result-card" style="margin-top:.75rem;border-color:var(--red-bg)">
+      <div class="result-card-label" style="color:var(--red)">Error</div>
+      <div class="result-card-value" style="color:var(--red)">${msg}</div>
+      <div style="margin-top:.75rem;font-size:.8rem;color:var(--ink3);line-height:1.6">
+        To connect this frontend to your live AgentCore runtimes, set up a backend proxy endpoint at <code style="background:var(--surface2);padding:2px 6px;border-radius:4px;font-family:'DM Mono',monospace">/api/invoke</code> that signs and forwards requests to AWS.
+      </div>
+    </div>`;
+}
+
+// ── SCROLL ANIMATIONS ─────────────────────────────────────────
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      e.target.style.animation = 'fadeUp .5s ease both';
+      observer.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.1});
+
+document.querySelectorAll('.metric-card,.about-card,.result-card').forEach(el => {
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
